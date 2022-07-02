@@ -50,3 +50,13 @@ Display:
 
 	The last execution of the "myCommand" task was at: 1617274500 (2021/04/01 01:55:10)
 
+
+cronexpr = "5-10 55 * * apr * 2021,2025 myCommand" ) -->
+	
+	Now() is 1656744468 (2022/07/01 20:47:48)
+	Cron expression is: 5-55 55 * * apr * myCommand
+
+	The next "myCommand" task will be performed at: 1680346505 (2023/04/01 00:55:05).
+
+	The last execution of the "myCommand" task was at: 1651312555 (2022/04/29 23:55:55).
+	
