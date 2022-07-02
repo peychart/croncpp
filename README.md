@@ -51,7 +51,8 @@ Display:
 	The last execution of the "myCommand" task was at: 1617274500 (2021/04/01 01:55:10)
 
 
-cronexpr = "5-10 55 * * apr * 2021,2025 myCommand" ) -->
+Or:
+---------
 	
 	Now() is 1656744468 (2022/07/01 20:47:48)
 	Cron expression is: 5-55 55 * * apr * myCommand
