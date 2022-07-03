@@ -149,9 +149,7 @@ namespace cronTab{
           i = ( next ?0 :( ( monthSize ?monthSize :field_size[nfield] ) - 1 ) );
       }while( i != j );
 
-      if( nfield == field_name::day_of_week )
-           overlay |= ( (*tminfo[field_name::day_of_month] += delta) >= monthSize ) || *tminfo[nfield]<0;
-      else overlay |= ( ( (*tminfo[nfield] += delta) >= field_size[nfield] ) && nfield!=field_name::year ) || *tminfo[nfield]<0;
+      *tminfo[(nfield == field_name::day_of_week) ?field_name::day_of_month :nfield] += delta;
       if( overlay ) while( nfield-- )
           *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
     }return mktime( &result );
