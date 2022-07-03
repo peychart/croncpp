@@ -132,7 +132,7 @@ namespace cronTab{
     std::tm result( timeinfo );
     if( convError() ) return time_t(-1);
     for( byte nfield(0); nfield<=field_name::year; nfield++ ){
-      bool overlay(false);
+      bool overflow(false);
       int delta(0), *tminfo[7];
       cron& date( initRef( result, tminfo) );
       int monthSize( (nfield==field_name::day_of_month) ?sizeOfMonth( result ) :0 );
@@ -144,14 +144,14 @@ namespace cronTab{
       }else do{
         if( isSet( field_name(nfield), i ) )
           break;
-        overlay = true;
+        overflow = true;
         delta += (next ?1 :-1);
         if( ( (i += (next ?1 :-1)) >= ( monthSize ?monthSize :field_size[nfield] ) ) )
           i = ( next ?0 :( ( monthSize ?monthSize :field_size[nfield] ) - 1 ) );
       }while( i != j );
 
       *tminfo[(nfield == field_name::day_of_week) ?field_name::day_of_month :nfield] += delta;
-      if( overlay ) while( nfield-- )
+      if( overflow ) while( nfield-- )
           *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
     }return mktime( &result );
   }
