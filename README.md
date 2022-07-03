@@ -46,9 +46,9 @@ Display:
 	Now() is 1656593363 (2022/06/30 02:49:23)
 	Cron expression is: */10 55 * * apr * 2021,2025 myCommand
 
-	The next "myCommand" task will be performed at: 1743504900 (2025/04/01 00:55:05).
+	The next "myCommand" task will be performed at: 1743504900 (2025/04/01 00:55:00).
 
-	The last execution of the "myCommand" task was at: 1617274500 (2021/04/01 23:55:10)
+	The last execution of the "myCommand" task was at: 1617274500 (2021/04/01 23:55:50)
 
 
 Or:
