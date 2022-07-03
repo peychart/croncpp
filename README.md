@@ -48,7 +48,7 @@ Display:
 
 	The next "myCommand" task will be performed at: 1743504900 (2025/04/01 00:55:00).
 
-	The last execution of the "myCommand" task was at: 1617274500 (2021/04/01 23:55:50)
+	The last execution of the "myCommand" task was at: 1617274500 (2021/04/30 23:55:50)
 
 
 Or:
