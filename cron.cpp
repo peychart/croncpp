@@ -137,10 +137,11 @@ namespace cronTab{
       cron& date( initRef( result, tminfo) );
       int monthSize( (nfield==field_name::day_of_month) ?sizeOfMonth( result ) :0 );
       byte i( date.findBit( field_name(nfield) , 0 ) ), j(i);
+      if( i==npos)    return time_t(-1);
       if( isSet( field_name(nfield) ) ){
           tminfo[nfield]=0;
           continue;
-      }else if( i!=npos ) do{
+      }else do{
         if( isSet( field_name(nfield), i ) )
           break;
         overlay = true;
