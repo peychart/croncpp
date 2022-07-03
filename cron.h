@@ -92,15 +92,15 @@ namespace cronTab
     inline void         convError         ( bool b )                              {_err=b;};
     inline bool         convError         ( void )                                {return _err;};
 
-    time_t              dateAround        ( std::tm, bool=true );
+    time_t              dateAround        ( const std::tm&, bool=true );
 
     bool                splitString       ( std::string&, std::string, std::string& );
     inline bool         isNumeric         ( std::string& s )                      {for( byte i(0); i<s.size(); i++ ) if( !isdigit( s[i] ) ) return false; return s.size();};
     inline std::string& toUpper           ( std::string& s )                      {for( auto &x : s ) x=static_cast<char>( std::toupper(x) ); return s;};
     std::string&        trimString        ( std::string& );
     std::string&        normalizeField    ( field_name const nfield, std::string& );
-    bool                tm_adjust         ( int&, short*, bool&, bool, byte&, short=0 );
-    std::tm&            tm_adjust         ( std::tm& );
+    cron&               initRef           ( std::tm&, int*[] );
+    int                 sizeOfMonth       ( std::tm&, bool=false );
  };
 }
 using namespace cronTab;
