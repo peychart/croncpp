@@ -44,7 +44,7 @@ Use example :
 Display:
 ---------
 	Now() is 1656593363 (2022/06/30 02:49:23)
-	Cron expression is: */10 55 * * apr * 2021-2025 myCommand
+	Cron expression is: */10 55 * * apr * 2021,2025 myCommand
 
 	The next "myCommand" task will be performed at: 1743504900 (2025/04/01 02:55:05).
 
