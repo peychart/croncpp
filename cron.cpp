@@ -116,54 +116,45 @@ namespace cronTab{
     }return s;
   }
 
-  std::tm& cron::tm_adjust( std::tm& timeinfo ){
-    if( isSet( field_name(0) ) ) timeinfo.tm_sec  = 0; else return timeinfo;
-    if( isSet( field_name(1) ) ) timeinfo.tm_min  = 0; else return timeinfo;
-    if( isSet( field_name(2) ) ) timeinfo.tm_hour = 0; else return timeinfo;
-    if( isSet( field_name(3) ) ) timeinfo.tm_mday = 1; else return timeinfo;
-    if( isSet( field_name(4) ) ) timeinfo.tm_mon  = 0;;     return timeinfo;
+  cron& cron::initRef( std::tm& timeinfo, int *tminfo[] ){
+    static cron date; mktime( &timeinfo );  //call mktime to recompute timeinfo...
+    tminfo[0] = &timeinfo.tm_sec;
+    tminfo[1] = &timeinfo.tm_min;
+    tminfo[2] = &timeinfo.tm_hour;
+    tminfo[3] = &timeinfo.tm_mday;
+    tminfo[4] = &timeinfo.tm_mon;
+    tminfo[5] = &timeinfo.tm_wday;
+    tminfo[6] = &timeinfo.tm_year;
+    return date.assign( &timeinfo );
   }
 
-  bool cron::tm_adjust( int& tm_Field, short* delta, bool& overlay, bool next, byte& nfield, short v ){
-    static short n(0); bool ret(0);
-    tm_Field += delta[n];
-    if ( delta[n] ){
-      overlay=false; nfield = -1; ret = 0;
-    }else if( overlay ){
-      tm_Field = v; ret = !next;
-    }else ret = 0;
-    n=(n+1)%(short(field_name::year)+1);
-    return ret;
-  }
-
-  time_t  cron::dateAround( std::tm timeinfo, bool next ){ bool ret;
-    if( !convError() ) for( byte nfield(0); nfield<=field_name::year; nfield++ ){
+  time_t  cron::dateAround( const std::tm& timeinfo, bool next ){
+    std::tm result( timeinfo );
+    if( convError() ) return time_t(-1);
+    for( byte nfield(0); nfield<=field_name::year; nfield++ ){
       bool overlay(false);
-      std::tm dateBackup( timeinfo );
-      cron date( &timeinfo );
-      short delta[field_name::year+1]={0};
+      int delta(0), *tminfo[7];
+      cron& date( initRef( result, tminfo) );
+      int monthSize( (nfield==field_name::day_of_month) ?sizeOfMonth( result ) :0 );
       byte i( date.findBit( field_name(nfield) , 0 ) ), j(i);
-      if( i!=npos ) do{
+      if( isSet( field_name(nfield) ) ){
+          tminfo[nfield]=0;
+          continue;
+      }else if( i!=npos ) do{
         if( isSet( field_name(nfield), i ) )
           break;
-        overlay=true;
-        delta[nfield] += (next ?1 :-1);
-        i += (next ?1 :-1);
-        if( i >= field_size[nfield] )
-          i = ( next ? 0 : field_size[nfield]-1 );
+        overlay = true;
+        delta += (next ?1 :-1);
+        if( ( (i += (next ?1 :-1)) >= ( monthSize ?monthSize :field_size[nfield] ) ) )
+          i = ( next ?0 :( ( monthSize ?monthSize :field_size[nfield] ) - 1 ) );
       }while( i != j );
 
-      if( delta[field_name::day_of_week] )
-        {delta[field_name::day_of_month] = delta[field_name::day_of_week]; delta[field_name::day_of_week]=0;}
-      ret = tm_adjust( timeinfo.tm_sec,        delta, overlay, next, nfield, next ?0 :-1 );
-      ret = tm_adjust( timeinfo.tm_min  +=ret, delta, overlay, next, nfield );
-      ret = tm_adjust( timeinfo.tm_hour +=ret, delta, overlay, next, nfield );
-      ret = tm_adjust( timeinfo.tm_mday +=ret, delta, overlay, next, nfield, next ?1 :0 );
-      ret = tm_adjust( timeinfo.tm_mon  +=ret, delta, overlay, next, nfield );
-      ret = tm_adjust( timeinfo.tm_wday +=ret, delta, overlay, next, nfield );
-            tm_adjust( timeinfo.tm_year +=ret, delta, overlay, next, nfield );
-      mktime( &timeinfo );  //call mktime to recompute timeinfo...
-    } return mktime( next ?&timeinfo :&tm_adjust( timeinfo ) );
+      if( nfield == field_name::day_of_week )
+           overlay |= ( (*tminfo[field_name::day_of_month] += delta) >= monthSize ) || *tminfo[nfield]<0;
+      else overlay |= ( ( (*tminfo[nfield] += delta) >= field_size[nfield] ) && nfield!=field_name::year ) || *tminfo[nfield]<0;
+      if( overlay ) while( nfield-- )
+          *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
+    }return mktime( &result );
   }
 
   bool cron::splitString( std::string& first, std::string pattern, std::string& second ){
@@ -179,5 +170,11 @@ namespace cronTab{
     for( auto &x : s ) if( x=='\t' ) x=' ';
     s.erase( 0, s.find_first_not_of(' ') ); for( std::size_t i(s.find("  ")); i!=std::string::npos; i=s.find("  ") ) {s.replace( i, 2, " " );};
     return s;
+  }
+
+  int cron::sizeOfMonth(std::tm& v, bool prev ){
+    static std::tm t; t.tm_isdst=t.tm_wday=t.tm_yday=t.tm_sec=t.tm_min=t.tm_hour=0;
+    t.tm_mday=31; t.tm_mon=v.tm_mon-prev; t.tm_year = v.tm_year; mktime( &t );
+    return( t.tm_mon==v.tm_mon ?31 :(31-t.tm_mday) );
   }
 }
