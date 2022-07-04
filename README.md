@@ -41,19 +41,28 @@ It implements two basic operations: find the next date or find the last date of 
     <td>allows to verify the cron expression</td>
   </tr>
   <tr>
-    <td><tt>const time_t cron.nextDate( const time_t )</td>
+    <td><tt>const time_t cron.nextDate( std::tn* )</td>
     <td>Find the next date of the cron job (-1 on error)</td>
   </tr>
   <tr>
-    <td><tt>const time_t cron.nextDate( std::tn )</td>
+    <td><tt>const time_t cron.nextDate( const time_t* )</td>
     <td>Find the next date of the cron job</td>
   </tr>
   <tr>
-    <td><tt>const time_t cron.previousDate( const time_t )</td>
-    <td>give the last date of the previous cron job</td>
+  <tr>
+    <td><tt>const time_t cron.nextDate( const time_t& )</td>
+    <td>Find the next date of the cron job</td>
   </tr>
   <tr>
     <td><tt>const time_t cron.previousDate( std::tn )</td>
+    <td>give the last date of the previous cron job</td>
+  </tr>
+  <tr>
+    <td><tt>const time_t cron.previousDate( const time_t* )</td>
+    <td>give the last date of the previous cron job</td>
+  </tr>
+  <tr>
+    <td><tt>const time_t cron.previousDate( const time_t& )</td>
     <td>give the last date of the previous cron job</td>
   </tr>
 </table>
