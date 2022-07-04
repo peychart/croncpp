@@ -173,7 +173,7 @@ Next job of a crontab :
 	     if ( r != -1 &&( r = c.nextDate( Now ) ) < rawtime ){
 	         rawtime = r;
 		 job = c.expression();
-  }    }
+        }    }
 
   	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&rawtime) );
   	std::cout << "The next job will be \"" << job << "\" at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
