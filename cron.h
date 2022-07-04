@@ -80,17 +80,19 @@ namespace cronTab
     inline void         setScope          ( field_name const nfield, bool v, byte begin, byte end, byte delta=1 ){
                                                                                    for( byte i( begin ); i<=end && !convError(); i += delta ) setBit( nfield, i - field_offset[nfield], v );};
 
-    inline void         setBit            ( field_name const nfield, byte i, bool v=true ){
+    inline void         setBit            ( byte       const nfield, byte i, bool v ){return setBit( field_name(nfield), i - field_offset[nfield], v );};
+    inline void         setBit            ( field_name const nfield, byte i, bool v ){
                                                                                    if( existingBit(nfield, i) ) this->set(index(nfield)+i, v); else convError( true );};
     inline bool         setField          ( field_name const nfield, bool v )     {if( !existingField(nfield) ) return false; for( byte i(index(nfield)), j(i+field_size[nfield]); i<j; i++) set( i, v ); return true;};
+    inline bool         setField          ( byte       const nfield, bool v )     {return( setField( field_name(nfield), v ) );};
 
     inline bool         isSet             ( field_name const nfield, byte i )     {return( (existingField(nfield) && i<field_size[nfield]) ?test(index(nfield)+i) :false );};
-    inline bool         isSet             ( byte       const nfield, byte i )     {return( isSet( field_name(nfield), i ) );};
+    inline bool         isSet             ( byte       const nfield, byte i )     {return( isSet( field_name(nfield), i - field_offset[nfield] ) );};
     inline bool         isSet             ( field_name const nfield )             {if( !existingField(nfield) ) return false; for( byte i(0); i<field_size[nfield]; i++ ) if( !test(index(nfield)+i) ) return false; return true;};
     inline bool         isSet             ( byte       const nfield )             {return( isSet( field_name(nfield) ) );};
     inline bool         isNotSet          ( field_name const nfield )             {if( existingField(nfield) ) for( byte i(index(nfield)), j(i+field_size[nfield]); i<j; i++) if(  test(i) ) return false; return true;};
     inline byte         findBit           ( field_name const nfield, byte n=0 )   {if( !existingField(nfield) ) return npos; for( byte i(n); i<field_size[nfield]; i++ ) if( isSet(nfield, i) ) return (i); return npos;};
-    inline byte         findBit           ( byte       const nfield, byte n=0 )   {return( findBit( field_name(nfield), n ) );};
+    inline byte         findBit           ( byte       const nfield, byte n=0 )   {return( findBit( field_name(nfield)-field_offset[n], n ) );};
     inline bool         existingField     ( field_name const nfield )             {return( nfield<=field_name::year );};
     inline bool         existingField     ( byte       const nfield )             {return( nfield<=field_name::year );};
     inline bool         existingBit       ( field_name const nfield, byte n )     {return( existingField(nfield) && n<field_size[nfield] );};
