@@ -37,7 +37,7 @@ It implements two basic operations: find the next date or find the last date of 
     <td>clear the cron object</td>
   </tr>
   <tr>
-    <td><tt>bool cron.error() (false on error)</td>
+    <td><tt>bool cron.error() ("return true on error)</td>
     <td>allows to verify the cron expression</td>
   </tr>
   <tr>
