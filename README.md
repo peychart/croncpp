@@ -169,7 +169,7 @@ Next job of a crontab :
 	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl << std::endl;
 
  	for( auto& x : crontab ){
-	     cron c(x);
+	     c.assign(x);
 	     if ( r != -1 &&( r = c.nextDate( Now ) ) < rawtime ){
 	         rawtime = r;
 		 job = c.expression();
