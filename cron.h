@@ -45,21 +45,21 @@ namespace cronTab
   class cron : std::bitset<field_name::expr>
   {
   public:
-    cron( void )             :_err(false) {init();};
+    cron( void )             :_err(true)  {init();};
     cron( std::string s )    :_err(false) {init(); assign( s );};
    ~cron( void )                          {clear();};
 
-    inline       std::string  expression  ( void )                                {return _expression;};
-    inline bool         error             ( void )                                {return convError();};
+    inline const std::string  expression  ( void )                                {return _expression;};
+    inline const bool         error       ( void )                                {return convError();};
 
-    inline cron&        clear             ( void )                                {convError(false); return unset();};
-    cron&               assign            ( std::string s );
-    inline cron&        operator=         ( std::string s )                       {return assign( s );};
+    inline cron&              clear       ( void )                                {for( byte i(0); i<field_name::expr; i++ ) set( i, false ); _expression.clear(); convError(true); return *this;};
+    cron&                     assign      ( std::string s );
+    inline cron&              operator=   ( std::string s )                       {return assign( s );};
 
-    inline time_t       nextDate          ( std::tm* t )                          {return dateAround( *t );};
-    inline time_t       nextDate          ( const time_t& rawtime )               {return nextDate( localtime( &rawtime ) );};
-    inline time_t       previousDate      ( std::tm* t )                          {return dateAround( *t, false );};
-    inline time_t       previousDate      ( const time_t& rawtime )               {return previousDate( localtime( &rawtime ) );};
+    inline const time_t       nextDate    ( std::tm* t )                          {return dateAround( *t );};
+    inline const time_t       nextDate    ( const time_t& rawtime )               {return nextDate( localtime( &rawtime ) );};
+    inline const time_t       previousDate( std::tm* t )                          {return dateAround( *t, false );};
+    inline const time_t       previousDate( const time_t& rawtime )               {return previousDate( localtime( &rawtime ) );};
 
   private:
     bool                _err;
@@ -69,25 +69,31 @@ namespace cronTab
     cron( const std::tm* t ) :_err(false) {init(); assign( t );};
     inline void         init              ( void )                                {time_t rawtime(time(NULL)); _year = localtime(&rawtime)->tm_year;};
 
-    inline cron&        unset             ( void )                                {for( byte i(0); i<field_name::expr; i++ ) set( i, false ); _expression.clear(); return *this;};
     cron&               assign            ( const std::tm* );
-    inline cron&        assign            ( const time_t* t )                     {return assign( localtime( t ) ); };
+    inline cron&        assign            ( const time_t* t )                     {return assign( localtime( t ) );};
     inline cron&        operator=         ( const std::tm* t )                    {return assign( t );};
     inline cron&        operator=         ( const time_t* t )                     {return assign( t );};
 
     byte                index             ( field_name const );
-    void                setField          ( field_name const, std::string, bool v );
+    void                setField          ( field_name const, std::string, bool );
+    inline void         setField          ( byte const n, std::string s, bool v ) {return( setField( field_name(n), s, v ) );};
     inline void         setScope          ( field_name const nfield, bool v, byte begin, byte end, byte delta=1 ){
                                                                                    for( byte i( begin ); i<=end && !convError(); i += delta ) setBit( nfield, i - field_offset[nfield], v );};
 
     inline void         setBit            ( field_name const nfield, byte i, bool v=true ){
-                                                                                   if( nfield<=field_name::year && i<field_size[nfield] ) this->set(index(nfield)+i, v); else convError( true );};
-    inline void         setField          ( field_name const nfield, bool v )     {for( byte i(0), j(index(nfield)); i<field_size[nfield]; i++) set( i+j, v );};
+                                                                                   if( existingBit(nfield, i) ) this->set(index(nfield)+i, v); else convError( true );};
+    inline bool         setField          ( field_name const nfield, bool v )     {if( !existingField(nfield) ) return false; for( byte i(index(nfield)), j(i+field_size[nfield]); i<j; i++) set( i, v ); return true;};
 
-    inline bool         isSet             ( field_name const nfield, byte i )     {return( (nfield<=year && i<field_size[nfield]) ?test(index(nfield)+i) :false );};
-    inline bool         isSet             ( field_name const nfield )             {for(byte i(0); i<field_size[nfield]; i++ ) if( !test(index(nfield)+i) ) return false; return true;};
-    inline byte         findBit           ( field_name const nfield, byte n=0 )   {for(byte i(n); i<field_size[nfield]; i++ ) if( isSet(nfield, i) ) return (i); return npos;}
-    inline bool         existingBit       ( field_name const nfield, byte n )     {return( n < field_size[nfield] && nfield <= field_name::year );};
+    inline bool         isSet             ( field_name const nfield, byte i )     {return( (existingField(nfield) && i<field_size[nfield]) ?test(index(nfield)+i) :false );};
+    inline bool         isSet             ( byte       const nfield, byte i )     {return( isSet( field_name(nfield), i ) );};
+    inline bool         isSet             ( field_name const nfield )             {if( !existingField(nfield) ) return false; for( byte i(0); i<field_size[nfield]; i++ ) if( !test(index(nfield)+i) ) return false; return true;};
+    inline bool         isSet             ( byte       const nfield )             {return( isSet( field_name(nfield) ) );};
+    inline bool         isNotSet          ( field_name const nfield )             {if( existingField(nfield) ) for( byte i(index(nfield)), j(i+field_size[nfield]); i<j; i++) if(  test(i) ) return false; return true;};
+    inline byte         findBit           ( field_name const nfield, byte n=0 )   {if( !existingField(nfield) ) return npos; for( byte i(n); i<field_size[nfield]; i++ ) if( isSet(nfield, i) ) return (i); return npos;};
+    inline byte         findBit           ( byte       const nfield, byte n=0 )   {return( findBit( field_name(nfield), n ) );};
+    inline bool         existingField     ( field_name const nfield )             {return( nfield<=field_name::year );};
+    inline bool         existingField     ( byte       const nfield )             {return( nfield<=field_name::year );};
+    inline bool         existingBit       ( field_name const nfield, byte n )     {return( existingField(nfield) && n<field_size[nfield] );};
 
     inline void         convError         ( bool b )                              {_err=b;};
     inline bool         convError         ( void )                                {return _err;};
@@ -98,7 +104,8 @@ namespace cronTab
     inline bool         isNumeric         ( std::string& s )                      {for( byte i(0); i<s.size(); i++ ) if( !isdigit( s[i] ) ) return false; return s.size();};
     inline std::string& toUpper           ( std::string& s )                      {for( auto &x : s ) x=static_cast<char>( std::toupper(x) ); return s;};
     std::string&        trimString        ( std::string& );
-    std::string&        normalizeField    ( field_name const nfield, std::string& );
+    std::string&        normalizeField    ( field_name const, std::string& );
+    inline std::string& normalizeField    ( byte const nfield, std::string& s )   {return( normalizeField( field_name(nfield), s ) );};
     cron&               initRef           ( std::tm&, int*[] );
     int                 sizeOfMonth       ( std::tm&, bool=false );
  };
