@@ -36,20 +36,22 @@ namespace cronTab{
   cron& cron::assign( std::string s ) {
     byte i(0);
     std::string second;
-    clear(); trimString( s );
+    clear(); convError( false ); trimString( s );
 
     do{
       if( !splitString( s, " ", second ) ){
         _expression = s;
         break;
-      }setField( field_name( i ), s, true );
+      }setField( i, s, true );
       s = second;
-    }while( ++i <= field_name::year );
+    }while( !convError() && ++i <= field_name::year );
     if( i <= field_name::year )
-          do setField( field_name( i ), true ); while ( ++i <= field_name::year );
+          setField( field_name::year, true );
     else _expression = s;
+    for( byte i(0); !convError() && i<=field_name::year; i++)
+      if( isNotSet( field_name(i) ) ) convError( true );
 
-    return( convError() ?unset() :*this );
+    return( convError() ?clear() :*this );
   }
 
   cron& cron::assign( const std::tm* t ){ // std::tm to cronFormat:
@@ -74,12 +76,12 @@ namespace cronTab{
       setField( nfield, first, v ); setField( nfield, second, v );
 
     }else if( splitString( first, "-", second ) ){
-      if( !isNumeric( normalizeField( field_name(nfield), first ) ) || !isNumeric( normalizeField( field_name(nfield), second ) ) )
+      if( !isNumeric( normalizeField( nfield, first ) ) || !isNumeric( normalizeField( nfield, second ) ) )
             convError( true );
       else  setScope( nfield, v, atoi(first.c_str()), atoi(second.c_str()) );
 
     }else if( splitString( first, "/", second ) ){
-      if( (first.compare("*")!=0 && !isNumeric( normalizeField( field_name(nfield), first ) )) || !isNumeric( second ) )
+      if( (first.compare("*")!=0 && !isNumeric( normalizeField( nfield, first ) )) || !isNumeric( second ) )
             convError( true );
       else {setScope( nfield, v, atoi(first.c_str()), field_size[ nfield ]-1, atoi(second.c_str()) );}
 
@@ -99,7 +101,7 @@ namespace cronTab{
             convError( true );
       else {setBit( nfield, field_size[ nfield ]-1, v ); setBit( nfield, field_size[ nfield ]-2, v );}
 
-    }else if( isNumeric( normalizeField( field_name(nfield), first ) ) ){
+    }else if( isNumeric( normalizeField( nfield, first ) ) ){
       setBit( nfield, atoi( first.c_str() ) - field_offset[nfield], v );
 
     }else convError( true );
@@ -128,30 +130,34 @@ namespace cronTab{
     return date.assign( &timeinfo );
   }
 
-  time_t  cron::dateAround( const std::tm& timeinfo, bool next ){
-    std::tm result( timeinfo );
+  time_t  cron::dateAround( const std::tm& timeinfo, bool next ){bool match(false);
     if( convError() ) return time_t(-1);
-    for( byte nfield(0); nfield<=field_name::year; nfield++ ){
+    std::tm result( timeinfo );
+    for( byte nfield(0); existingField(nfield); nfield++ ){
       int delta(0), *tminfo[7];
       cron& date( initRef( result, tminfo) );
       int monthSize( (nfield==field_name::day_of_month) ?sizeOfMonth( result ) :0 );
-      byte i( date.findBit( field_name(nfield) , 0 ) ), j(i);
+      byte i( date.findBit( nfield , 0 ) ), j(i);
       if( i==npos)    return time_t(-1);
-      if( isSet( field_name(nfield) ) ){
-          tminfo[nfield]=0;
-          continue;
-      }else do{
-        if( isSet( field_name(nfield), i ) )
+
+      if( isSet( nfield ) ){
+        tminfo[nfield]=0;
+        continue;
+      }else while( true ){
+        if( isSet( nfield, i ) )
           break;
-        delta += (next ?1 :-1);
+        match |= delta += (next ?1 :-1);
         if( ( (i += (next ?1 :-1)) >= ( monthSize ?monthSize :field_size[nfield] ) ) )
           i = ( next ?0 :( ( monthSize ?monthSize :field_size[nfield] ) - 1 ) );
-      }while( i != j );
+        if( i == j )  return time_t(-1);
+      }
 
-      *tminfo[(nfield == field_name::day_of_week) ?field_name::day_of_month :nfield] += delta;
-      if( delta ) while( nfield-- )
-          *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
-    }return mktime( &result );
+      if( delta /*|| (!match && nfield==field_name::year)*/ ){
+        *tminfo[(nfield == field_name::day_of_week) ?field_name::day_of_month :nfield] += delta;
+        while( existingField(--nfield ) )
+          *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :(isSet(nfield) ?0 :( monthSize ?monthSize : field_size[nfield]-1)) );
+    } }
+    return mktime( &result );
   }
 
   bool cron::splitString( std::string& first, std::string pattern, std::string& second ){
