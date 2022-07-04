@@ -159,11 +159,11 @@ Next job of a crontab :
 	c.clear() = crontab[0]; rawtime = c.nextDate(Now);
 	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
 	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl;
-        
+
 	c.clear() = crontab[1]; rawtime = c.nextDate(Now);
 	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
 	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl;
-        
+
 	c.clear() = crontab[2]; rawtime = c.nextDate(Now);
 	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
 	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl << std::endl;
@@ -184,10 +184,10 @@ Next job of a crontab :
 Display:
 ---------
 
-Now() is 1656926824 (2022/07/03 23:27:04):
+        Now() is 1656926824 (2022/07/03 23:27:04):
 
-The job "myCommand1" will be lanched at: 1680346505 (2023/04/01 00:55:05),
-The job "myCommand2" will be lanched at: 1656926880 (2022/07/03 23:28:00),
-The job "myCommand3" will be lanched at: 1743504900 (2025/04/01 00:55:00),
+        The job "myCommand1" will be lanched at: 1680346505 (2023/04/01 00:55:05),
+        The job "myCommand2" will be lanched at: 1656926880 (2022/07/03 23:28:00),
+        The job "myCommand3" will be lanched at: 1743504900 (2025/04/01 00:55:00),
 
-The next job will be "myCommand2" at: 1656926880 (2022/07/03 23:28:00).
+        The next job will be "myCommand2" at: 1656926880 (2022/07/03 23:28:00).
