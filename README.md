@@ -130,3 +130,52 @@ Or:
 	The last execution of the "myCommand" task was at: 1656905280 (2022/07/03 17:28:00).
 
 ...
+
+Next job of a crontab :
+=======================
+
+	# define out /*
+	g++ -o main $0 cron.cpp && ./main; exit $?
+	# define out */
+	# undef out
+
+	#include <string>
+	#include <vector>
+	#include <iostream>
+	#include "cron.h"
+
+	int main() {
+	std::vector<std::string> crontab = {"5-55 55 * * apr * myCommand1", "* 25-30 * * * * myCommand2", "*/10 55 * * apr * 2021,2025 myCommand3" };
+
+	char buffer [80];
+	time_t r, Now(time(NULL));
+	time_t rawtime( cron( crontab[0] ).nextDate( Now ) );
+	std::string job;
+	cron c;
+
+	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&Now) );
+	std::cout << "Now() is " << Now << " (" << buffer << ")" << std::endl << std::endl;
+
+	c.clear() = crontab[0]; rawtime = c.nextDate(Now);
+	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
+	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
+
+	c.clear() = crontab[1]; rawtime = c.nextDate(Now);
+	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
+	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
+
+	c.clear() = crontab[2]; rawtime = c.nextDate(Now);
+	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
+	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
+
+ 	std::string name; for( auto& x : crontab ){
+	cron c(x);
+	if ( r != -1 &&( r = c.nextDate( Now ) ) < rawtime )
+	    rawtime = r; job = c.expression();
+  	}
+
+  	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&rawtime) );
+  	std::cout << "The next job will be \"" << job << "\" at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
+
+  	return 0;
+  	}
