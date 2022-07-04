@@ -159,11 +159,11 @@ Next job of a crontab :
 	c.clear() = crontab[0]; rawtime = c.nextDate(Now);
 	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
 	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl;
-
+        
 	c.clear() = crontab[1]; rawtime = c.nextDate(Now);
 	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
 	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl;
-
+        
 	c.clear() = crontab[2]; rawtime = c.nextDate(Now);
 	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
 	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl << std::endl;
