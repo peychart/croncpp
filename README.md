@@ -183,10 +183,11 @@ Next job of a crontab :
 Display:
 ---------
 
-        Now() is 1656926824 (2022/07/03 23:27:04):
+        Now() is 1656967888 (2022/07/04 10:51:28):
 
-        The job "myCommand1" will be lanched at: 1680346505 (2023/04/01 00:55:05),
-        The job "myCommand2" will be lanched at: 1656926880 (2022/07/03 23:28:00),
-        The job "myCommand3" will be lanched at: 1743504900 (2025/04/01 00:55:00),
+        The job "myCmd1" lanched at: 1680346505 (2023/04/01 00:55:05), - "5-55 55 * * apr * myCmd1"
+        The job "myCmd2" lanched at: 1656969900 (2022/07/04 11:25:00), - "* 25-30 * * * * myCmd2"
+        The job "myCmd3" lanched at: 1743504900 (2025/04/01 00:55:00), - "*/10 55 * * apr * 2021,2025 myCmd3"
+        The job "myCmd4" lanched at: 1657015500 (2022/07/05 00:05:00), - "* 05-30 * * * 2-3 * myCmd4"
 
-        The next job will be "myCommand2" at: 1656926880 (2022/07/03 23:28:00).
+        The next job will be "myCmd2" at: 1656969900 (2022/07/04 11:25:00).
