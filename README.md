@@ -115,7 +115,7 @@ Or:
 Or:
 ---------
 	Now() is 1656905304 (2022/07/03 17:28:24)
-	Cron expression is: * 25-30 * * * * myCommand   // the year is optional...
+	Cron expression is: * 25-30 * * * * myCommand   // the year field is optional...
 	The next "myCommand" task will be performed at: 1656905340 (2022/07/03 17:29:00).
 	The last execution of the "myCommand" task was at: 1656905280 (2022/07/03 17:28:00).
 
