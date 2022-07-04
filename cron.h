@@ -31,7 +31,7 @@
 
 namespace cronTab
 {
-  typedef char  unsigned     byte;
+  typedef unsigned char      byte;
   typedef short unsigned int ushort;
 
   #define SCOPE_OF_YEARS    8
