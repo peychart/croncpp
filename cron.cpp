@@ -130,7 +130,7 @@ namespace cronTab{
     return date.assign( &timeinfo );
   }
 
-  time_t  cron::dateAround( const std::tm& timeinfo, bool next ){bool match(true);
+  time_t  cron::dateAround( const std::tm& timeinfo, bool next ){
     if( convError() ) return time_t(-1);
     std::tm result( timeinfo );
     for( byte nfield(0); existingField(nfield); nfield++ ){
@@ -146,7 +146,7 @@ namespace cronTab{
       }else while( true ){
         if( isSet( nfield, i ) )
           break;
-        match |= !( delta += (next ?1 :-1) );
+        delta += (next ?1 :-1);
         if( ( (i += (next ?1 :-1)) >= ( monthSize ?monthSize :field_size[nfield] ) ) )
           i = ( next ?0 :( ( monthSize ?monthSize :field_size[nfield] ) - 1 ) );
         if( i == j )  return time_t(-1);
@@ -156,8 +156,6 @@ namespace cronTab{
         *tminfo[(nfield == field_name::day_of_week) ?field_name::day_of_month :nfield] += delta;
         while( existingField(--nfield ) )
           *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
-      }else if( nfield == field_name::year && match ){
-        result.tm_sec=(next ?60 :0); match=false; nfield=-1;
     } }
     return mktime( &result );
   }
