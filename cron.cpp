@@ -154,7 +154,7 @@ namespace cronTab{
       }
 
       if( delta ){match=false;
-        if( nfield == field_name::day_of_week ) {*tminfo[field_name::day_of_month] += delta; nfield += 2;} else {*tminfo[nfield] += delta;};
+        if( nfield == field_name::day_of_week ) {*tminfo[field_name::day_of_month] += delta; nfield -= 2;} else {*tminfo[nfield] += delta;};
         while( existingField(--nfield ) ) *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
       }else if( nfield == field_name::year && match ){                                                   // Ref date matchs with cron!...
         for( nfield=0; nfield<=field_name::year; nfield++ ) if( !isSet(nfield) ){  // searching for first not "*"
