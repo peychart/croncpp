@@ -50,7 +50,7 @@ namespace cronTab{
     else _expression = s;
 
     for( byte i(0); !convError() && i<=field_name::year; i++)
-      if( isNotSet( field_name(i) ) ) {convError( true ); break;}
+      if( isNotSet( field_name(i) ) ) convError( true );
 
     return( convError() ?clear() :*this );
   }
