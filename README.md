@@ -23,7 +23,7 @@ Use example :
         int main() {
         time_t rawtime(time(NULL)), result;
         char buffer [80];
-        std::string cronexpr( "5-10 55 * * apr * 2021,2025 myCommand" );
+        std::string cronexpr( "5/10 55 * * apr * 2021,2025 myCommand" );
 
         strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&rawtime) );
         std::cout << "Now() is " << rawtime << " (" << buffer << ")" << std::endl << "Cron expression is: " << cronexpr << std::endl;
