@@ -7,7 +7,7 @@ Software:
 
 C++ source.
 
-"Croncpp" is a library for processing CRON expressions.
+"Croncpp" is a light library (iot-friendly) for processing CRON expressions.
 
 It implements two basic operations: find the next date or find the last date of execution of a periodic processing defined in cron format.
 
