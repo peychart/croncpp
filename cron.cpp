@@ -48,8 +48,9 @@ namespace cronTab{
     if( i <= field_name::year )
           setField( field_name::year, true );
     else _expression = s;
+
     for( byte i(0); !convError() && i<=field_name::year; i++)
-      if( isNotSet( field_name(i) ) ) convError( true );
+      if( isNotSet( field_name(i) ) ) {convError( true ); break;}
 
     return( convError() ?clear() :*this );
   }
