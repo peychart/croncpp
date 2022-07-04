@@ -17,7 +17,7 @@ It implements two basic operations: find the next date or find the last date of 
     <td>initialze a cron object</td>
   </tr>
   <tr>
-    <td><tt>cron( std::string( `a cron format string definition` )</tt></td>
+    <td><tt>cron( std::string( `a cron format string definition (see below)` )</tt></td>
     <td>initialize and set a cron job object</td>
   </tr>
   <tr>
