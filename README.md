@@ -114,22 +114,6 @@ Display:
 	The next "myCommand" task will be performed at: 1743504900 (2025/04/01 00:55:00).
 	The last execution of the "myCommand" task was at: 1617274500 (2021/04/30 23:55:50)
 
-Or:
----------
-	
-	Now() is 1656744468 (2022/07/01 20:47:48)
-	Cron expression is: 5-55 55 * * apr * myCommand
-	The next "myCommand" task will be performed at: 1680346505 (2023/04/01 00:55:05).
-	The last execution of the "myCommand" task was at: 1651312555 (2022/04/29 23:55:55).
-
-Or:
----------
-	Now() is 1656905304 (2022/07/03 17:28:24)
-	Cron expression is: * 25-30 * * * * myCommand   // the year field is optional...
-	The next "myCommand" task will be performed at: 1656905340 (2022/07/03 17:29:00).
-	The last execution of the "myCommand" task was at: 1656905280 (2022/07/03 17:28:00).
-
-...
 
 Next job of a crontab :
 =======================
