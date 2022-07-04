@@ -58,6 +58,7 @@ It implements two basic operations: find the next date or find the last date of 
   </tr>
 </table>
 
+Cron string format : "S M H d m w [Y] cmd" (Year is optional ; default limit values of the year: +/- 8 years relative to the current year).
 
 Use example :
 =====================
