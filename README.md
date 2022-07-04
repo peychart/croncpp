@@ -22,7 +22,7 @@ It implements two basic operations: find the next date or find the last date of 
   </tr>
   <tr>
     <td><tt>std::string cron.expression()</tt></td>
-    <td>return the commande on the job</td>
+    <td>return the command off the job</td>
   </tr>
   <tr>
     <td><tt>cron& cron.assign( std::string )</td>
