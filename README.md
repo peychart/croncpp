@@ -12,7 +12,7 @@ C++ source.
 It implements two basic operations: find the next date or find the last date of execution of a periodic processing defined in cron format.
 
 
-This allows you to find the current status of the iot device after rebooting and plan its next state ...
+This allows to find the current status of the iot device after rebooting and plan its next state ...
 
 <table>
   <tr>
