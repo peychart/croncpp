@@ -55,15 +55,15 @@ It implements two basic operations: find the next date or find the last date of 
   </tr>
   <tr>
     <td><tt>const time_t cron.previousDate( std::tn )</td>
-    <td>give the last rawtime of the previous cron job</td>
+    <td>give the last rawtime of the previous cron job exec</td>
   </tr>
   <tr>
     <td><tt>const time_t cron.previousDate( const time_t* )</td>
-    <td>give the last rawtime of the previous cron job</td>
+    <td>give the last rawtime of the previous cron job exec</td>
   </tr>
   <tr>
     <td><tt>const time_t cron.previousDate( const time_t& )</td>
-    <td>give the last rawtime of the previous cron job</td>
+    <td>give the last rawtime of the previous cron job exec</td>
   </tr>
 </table>
 
