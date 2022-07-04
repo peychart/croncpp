@@ -145,7 +145,12 @@ Next job of a crontab :
 	#include "cron.h"
 
 	int main() {
-	std::vector<std::string> crontab = {"5-55 55 * * apr * myCommand1", "* 25-30 * * * * myCommand2", "*/10 55 * * apr * 2021,2025 myCommand3" };
+	std::vector<std::string> crontab = {
+	      "5-55 55 * * apr * myCmd1",
+	      "* 25-30 * * * * myCmd2",
+	      "*/10 55 * * apr * 2021,2025 myCmd3",
+	      "* 05-30 * * * 2-3 * myCmd4"
+	};
 
 	char buffer [80];
 	time_t r, Now(time(NULL));
@@ -155,18 +160,12 @@ Next job of a crontab :
 
 	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&Now) );
 	std::cout << "Now() is " << Now << " (" << buffer << "):" << std::endl << std::endl;
-
-	c.clear() = crontab[0]; rawtime = c.nextDate(Now);
-	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
-	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl;
-
-	c.clear() = crontab[1]; rawtime = c.nextDate(Now);
-	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
-	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl;
-
-	c.clear() = crontab[2]; rawtime = c.nextDate(Now);
-	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
-	std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << rawtime << " (" << buffer << ")," << std::endl << std::endl;
+	
+	for( int i(0); i<crontab.size(); i++){
+	      c.clear() = crontab[i]; rawtime = c.nextDate(Now);
+              strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &rawtime ) );
+              std::cout << "The job \"" << c.expression() << "\" lanched at: " << rawtime << " (" << buffer << "), - \"" << crontab[i] << "\"" << std::endl;
+	}
 
  	for( auto& x : crontab ){
 	     c.assign(x);
@@ -176,7 +175,7 @@ Next job of a crontab :
         }    }
 
   	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&rawtime) );
-  	std::cout << "The next job will be \"" << job << "\" at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
+  	std::cout << std::endl << "The next job will be \"" << job << "\" at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
 
   	return 0;
   	}
