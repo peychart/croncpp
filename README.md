@@ -76,7 +76,7 @@ Use example :
         std::string cronexpr( "*/10 55 * * apr * 2021-2025 myCommand" );
         // Or:
         // localtime( &rawtime );
-        // cron myCron( "*/10 55 * * apr * 2021-2025 myCommand" );
+        // cron myCron = "*/10 55 * * apr * 2021-2025 myCommand";
         // rawtime = myCron.nextDate( &rawtime );
         // std::cout << localtime( &rawtime ) << std::endl;
         // ...
