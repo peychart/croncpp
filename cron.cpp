@@ -94,12 +94,12 @@ namespace cronTab{
     }else if( first.compare( "L" ) == 0 ){
       if( nfield!=field_name::day_of_week && nfield!=field_name::day_of_month )
             convError( true );
-      else {setBit( nfield, field_size[ nfield ]-1, v );}
+      else {setBit( field_name(nfield), field_size[ nfield ]-1, v );}
 
     }else if( first.compare( "W" ) == 0 ){
       if( nfield!=field_name::day_of_week )
             convError( true );
-      else {setBit( nfield, field_size[ nfield ]-1, v ); setBit( nfield, field_size[ nfield ]-2, v );}
+      else {setBit( field_name(nfield), field_size[ nfield ]-1, v ); setBit( field_name(nfield), field_size[ nfield ]-2, v );}
 
     }else if( isNumeric( normalizeField( nfield, first ) ) ){
       setBit( nfield, atoi( first.c_str() ) - field_offset[nfield], v );
@@ -130,21 +130,21 @@ namespace cronTab{
     return date.assign( &timeinfo );
   }
 
-  time_t  cron::dateAround( const std::tm& timeinfo, bool next ){
+  time_t  cron::dateAround( const std::tm& timeinfo, bool next ){bool match(true);
     if( convError() ) return time_t(-1);
     std::tm result( timeinfo );
     for( byte nfield(0); existingField(nfield); nfield++ ){
       int delta(0), *tminfo[7];
       cron& date( initRef( result, tminfo) );
       int monthSize( (nfield==field_name::day_of_month) ?sizeOfMonth( result ) :0 );
-      byte i( date.findBit( nfield , 0 ) ), j(i);
+      byte i( date.findBit( field_name(nfield), 0 ) ), j(i);
       if( i==npos)    return time_t(-1);
 
-      if( isSet( nfield ) ){
+      if( isSet( field_name(nfield) ) && !(nfield==field_name::year && match) ){
         tminfo[nfield]=0;
         continue;
       }else while( true ){
-        if( isSet( nfield, i ) )
+        if( isSet( field_name(nfield), i ) )
           break;
         delta += (next ?1 :-1);
         if( ( (i += (next ?1 :-1)) >= ( monthSize ?monthSize :field_size[nfield] ) ) )
@@ -152,10 +152,18 @@ namespace cronTab{
         if( i == j )  return time_t(-1);
       }
 
-      if( delta ){
+      if( delta ){match=false;
         *tminfo[(nfield == field_name::day_of_week) ?field_name::day_of_month :nfield] += delta;
-        while( existingField(--nfield ) )
-          *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
+        while( existingField(--nfield ) ) *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
+      }else if( nfield == field_name::year && match ){                                                   // Ref date matchs with cron!...
+        for( nfield=0; nfield<=field_name::year; nfield++ ) if( !isSet(nfield) ){  // searching for first not "*"
+          if(next){
+            if( isSet( nfield, *tminfo[nfield] + (next ?1 :-1) - (nfield==field_name::day_of_month) ) ){ // previous on cron "* * * A-B(matching) * * * cmd"
+                   setField( nfield, false ); setBit( nfield, *tminfo[nfield] + (next ?1 :-1), true );
+            }else  *tminfo[nfield]+=1;
+            nfield=-2;
+          }else{ while( existingField(--nfield) ) *tminfo[nfield]=0; nfield=-3; break;}                  // previous on cron "* * * X(matching) * * * cmd"
+        }if( nfield==-1 )return time_t(-1 );                                       // cron is "* * * * * * * cmd"
     } }
     return mktime( &result );
   }
