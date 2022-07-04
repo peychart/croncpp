@@ -70,7 +70,7 @@ This allows to find the current status of the iot device after rebooting and pla
   </tr>
 </table>
 
-Format of a cron string : "S M H d m w [Y] cmd" (Year is optional ; default limit values of the year: +/- 8 years relative to the current year).
+Format of a cron string : "S M H d m w [Y] cmd" - (Year is optional ; default limit values of the year: +/- 8 years relative to the current year).
 
 Use example :
 =====================
