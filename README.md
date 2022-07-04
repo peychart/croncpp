@@ -8,6 +8,53 @@ C++ source.
 
 "Croncpp" is a library for processing CRON expressions. It implements two basic operations: find the next date or find the last date of execution of a periodic processing defined in cron format.
 
+<table>
+  <tr>
+    <td><tt>cron()</tt></td>
+    <td>initialze a cron object</td>
+  </tr>
+  <tr>
+    <td><tt>cron( std::string( `a cron format string definition` )</tt></td>
+    <td>initialize and set a cron job object</td>
+  </tr>
+  <tr>
+    <td><tt>std::string cron.expression()</tt></td>
+    <td>return the commande on the job</td>
+  </tr>
+  <tr>
+    <td><tt>cron& cron.assign( std::string )</td>
+    <td>assign a new cron definition</td>
+  </tr>
+  <tr>
+    <td><tt>cron = std:string()</td>
+    <td>assign a new cron definition</td>
+  </tr>
+  <tr>
+    <td><tt>cron& cron.clear()</td>
+    <td>clear the cron object</td>
+  </tr>
+  <tr>
+    <td><tt>bool cron.error() (false on error)</td>
+    <td>allows to verify the cron expression</td>
+  </tr>
+  <tr>
+    <td><tt>const time_t cron.nextDate( const time_t )</td>
+    <td>Find the next date of the cron job (-1 on error)</td>
+  </tr>
+  <tr>
+    <td><tt>const time_t cron.nextDate( std::tn )</td>
+    <td>Find the next date of the cron job</td>
+  </tr>
+  <tr>
+    <td><tt>const time_t cron.previousDate( const time_t )</td>
+    <td>give the last date of the previous cron job</td>
+  </tr>
+  <tr>
+    <td><tt>const time_t cron.previousDate( std::tn )</td>
+    <td>give the last date of the previous cron job</td>
+  </tr>
+</table>
+
 
 Use example :
 =====================
@@ -23,7 +70,13 @@ Use example :
         int main() {
         time_t rawtime(time(NULL)), result;
         char buffer [80];
-        std::string cronexpr( "5/10 55 * * apr * 2021,2025 myCommand" );
+        std::string cronexpr( "*/10 55 * * apr * 2021-2025 myCommand" );
+	// Or:
+	// localtime( &rawtime );
+	// cron myCron( "*/10 55 * * apr * 2021-2025 myCommand" );
+	// rawtime = myCron.nextDate( &rawtime );
+	// std::cout << localtime( &rawtime ) << std::endl;
+	// ...
 
         strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&rawtime) );
         std::cout << "Now() is " << rawtime << " (" << buffer << ")" << std::endl << "Cron expression is: " << cronexpr << std::endl;
@@ -50,14 +103,16 @@ Display:
 
 Or:
 ---------
+	
 	Now() is 1656744468 (2022/07/01 20:47:48)
-	Cron expression is: 5,55 55 * * apr * myCommand
+	Cron expression is: 5-55 55 * * apr * myCommand
 	The next "myCommand" task will be performed at: 1680346505 (2023/04/01 00:55:05).
 	The last execution of the "myCommand" task was at: 1651312555 (2022/04/29 23:55:55).
-	
+
 Or:
 ---------
-	Now() is 1656916101 (2022/07/03 20:28:21)
-	Cron expression is: * * * 3 * * * myCommand
-	The next "myCommand" task will be performed at: 1656928800 (2022/07/04 00:00:00).
-	The last execution of the "myCommand" task was at: 1656842400 (2022/07/03 00:00:00).
+	Now() is 1656905304 (2022/07/03 17:28:24)
+	The next "myCommand" task will be performed at: 1656905340 (2022/07/03 17:29:00).
+	The last execution of the "myCommand" task was at: 1656905280 (2022/07/03 17:28:00).
+
+...
