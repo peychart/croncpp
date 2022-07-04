@@ -50,7 +50,7 @@ namespace cronTab{
     else _expression = s;
 
     for( byte i(0); !convError() && i<=field_name::year; i++)
-      if( isNotSet( field_name(i) ) ) convError( true );
+      if( isNotSet( field_name(i) ) ) {convError( true ); break;}
 
     return( convError() ?clear() :*this );
   }
@@ -113,7 +113,7 @@ namespace cronTab{
     if( field_name( nfield ) == field_name::day_of_week ){
       for(byte i(0); i< 6; i++) if( toUpper(s).compare( weekDay[i]  )==0 ) {str << i + field_offset[nfield]; s.assign( str.str() );}
     }else if( field_name( nfield ) == field_name::month ){
-      for(byte i(0); i<12; i++) if( toUpper(s).compare( monthName[i] )==0 ) {str << i + field_offset[nfield]; s.assign( str.str() );}
+      for(byte i(0); i<12; i++) if( toUpper(s).compare( monthDay[i] )==0 ) {str << i + field_offset[nfield]; s.assign( str.str() );}
     }else if( field_name( nfield ) == field_name::year ){
       str << ( atoi(s.c_str()) - 1900 - _year + 2 * field_offset[nfield] ); s.assign( str.str() );
     }return s;
@@ -143,7 +143,7 @@ namespace cronTab{
 
       if( isSet( field_name(nfield) ) && !(nfield==field_name::year && match) ){
         tminfo[nfield]=0;
-        continue;
+        if( nfield<field_name::year ) continue;
       }else while( true ){
         if( isSet( field_name(nfield), i ) )
           break;
@@ -156,7 +156,7 @@ namespace cronTab{
       if( delta ){match=false;
         if( nfield == field_name::day_of_week ) {*tminfo[field_name::day_of_month] += delta; nfield -= 2;} else {*tminfo[nfield] += delta;};
         while( existingField(--nfield ) ) *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
-      }else if( nfield == field_name::year && match ){                                                   // Ref date matchs with cron!...
+      }else if( nfield == field_name::year && (match || !next) ){                                                   // Ref date matchs with cron!...
         for( nfield=0; nfield<=field_name::year; nfield++ ) if( !isSet(nfield) ){  // searching for first not "*"
           if(next){
             if( isSet( nfield, *tminfo[nfield] + (next ?1 :-1) - (nfield==field_name::day_of_month) ) ){ // previous on cron "* * * A-B(matching) * * * cmd"
