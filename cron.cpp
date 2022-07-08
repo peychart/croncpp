@@ -66,7 +66,7 @@ namespace cronTab{
     << " " << (1900 + t->tm_year)
     << " NIL";
     assign( s.str() );
-    setBit( byte(field_name::month), sizeOfMonth(*t), isSet( byte(field_name::month), field_size[field_name::month] ) );
+    //setBit( byte(field_name::month), sizeOfMonth(*t), isSet( byte(field_name::month), field_size[field_name::month] ) );
     return *this;
   }
 
