@@ -52,7 +52,7 @@ namespace cronTab
     inline const std::string  expression  ( void )                                {return _expression;};
     inline const bool         error       ( void )                                {return convError();};
 
-    inline cron&              clear       ( void )                                {for( byte i(0); i<=field_name::year; i++ ) set( i, false ); _expression.clear(); convError(true); return *this;};
+    inline cron&              clear       ( void )                                {for( byte i(0); i<field_name::expr; i++ ) set( i, false ); _expression.clear(); convError(true); return *this;};
     cron&                     assign      ( std::string s );
     inline cron&              operator=   ( std::string s )                       {return assign( s );};
 
