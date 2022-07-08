@@ -52,7 +52,7 @@ namespace cronTab
     inline const std::string  expression  ( void )                                {return _expression;};
     inline const bool         error       ( void )                                {return convError();};
 
-    inline cron&              clear       ( void )                                {for( byte i(0); i<field_name::expr; i++ ) set( i, false ); _expression.clear(); convError(true); return *this;};
+    inline cron&              clear       ( void )                                {for( byte i(0); i<field_name::expr; i++ ) set( i, false ); _expression.clear(); _lastIsSet=false; convError(true); return *this;};
     cron&                     assign      ( std::string s );
     inline cron&              operator=   ( std::string s )                       {return assign( s );};
 
@@ -64,7 +64,7 @@ namespace cronTab
     inline const time_t       previousDate( const time_t& rawtime )               {return previousDate( localtime( &rawtime ) );};
 
   private:
-    bool                _err;
+    bool                _err, _lastIsSet;
     ushort              _year;
     std::string         _expression;
 
