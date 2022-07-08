@@ -31,14 +31,14 @@
 
 namespace cronTab
 {
-  typedef unsigned char      byte;
+  typedef char  unsigned     byte;
   typedef short unsigned int ushort;
 
-  #define SCOPE_OF_YEARS    8
+  #define SCOPE_OF_YEARS            8
   enum field_name {second, minute, hour_of_day, day_of_month, month, day_of_week, year, expr=194 + SCOPE_OF_YEARS*2 + 1}; // Adressage : field_name::hour
-  static const byte field_size[]= {60,60,24,31,12, 7, SCOPE_OF_YEARS*2 + 1};         // expr == sum ...
-  static byte field_offset[]    = { 0, 0, 0, 1, 1, 0, SCOPE_OF_YEARS};
-  static const char* weekDay[]  = { "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };
+  static const byte field_size[] = {60,60,24,31,12, 7, SCOPE_OF_YEARS*2 + 1};         // expr == sum ...
+  static byte field_offset[]     = { 0, 0, 0, 1, 1, 0, SCOPE_OF_YEARS};
+  static const char* weekDay[]   = { "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };
   static const char* monthName[] = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
   static const byte  npos = byte(-1);
 
@@ -57,8 +57,10 @@ namespace cronTab
     inline cron&              operator=   ( std::string s )                       {return assign( s );};
 
     inline const time_t       nextDate    ( std::tm* t )                          {return dateAround( *t );};
+    inline const time_t       nextDate    ( const time_t* rawtime )               {return nextDate( localtime( rawtime ) );};
     inline const time_t       nextDate    ( const time_t& rawtime )               {return nextDate( localtime( &rawtime ) );};
     inline const time_t       previousDate( std::tm* t )                          {return dateAround( *t, false );};
+    inline const time_t       previousDate( const time_t* rawtime )               {return previousDate( localtime( rawtime ) );};
     inline const time_t       previousDate( const time_t& rawtime )               {return previousDate( localtime( &rawtime ) );};
 
   private:
