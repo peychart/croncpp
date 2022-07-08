@@ -163,7 +163,17 @@ Next job of a crontab :
         }    }
 
   	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&rawtime) );
-  	std::cout << std::endl << "The next job will be \"" << job << "\" at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
+  	std::cout << std::endl << "The next job will be \"" << job << "\" at: " << rawtime << " (" << buffer << ")." << std::endl;
+
+ 	rawtime=-1; for( auto& x : crontab ){
+	     c.assign(x);
+	     if ( r != -1 &&( r = c.nextDate( Now ) ) > rawtime ){
+	         rawtime = r;
+		 job = c.expression();
+        }    }
+
+  	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&rawtime) );
+  	std::cout << std::endl << "The previous job was \"" << job << "\" at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
 
   	return 0;
   	}
@@ -171,7 +181,7 @@ Next job of a crontab :
 Display:
 ---------
 
-        Now() is 1656967888 (2022/07/04 10:51:28):
+        Now() is 1657314816 (2022/07/08 11:13:36):
 
         The job "myCmd1" lanched at: 1680346505 (2023/04/01 00:55:05), - "5-55 55 * * apr * myCmd1"
         The job "myCmd2" lanched at: 1656969900 (2022/07/04 11:25:00), - "* 25-30 * * * * myCmd2"
@@ -179,4 +189,6 @@ Display:
         The job "myCmd4" lanched at: 1657015500 (2022/07/05 00:05:00), - "* 05-30 * * * 2-3 * myCmd4"
         The job "myCmd5" lanched at: 1659261600 (2022/07/31 00:00:00), - "* * * 31 * * myCmd5"
 
-        The next job will be "myCmd2" at: 1656969900 (2022/07/04 11:25:00).
+        The next job will be "myCmd2" at: 1657315500 (2022/07/08 11:25:00).
+
+        The previous job was "myCmd2" at: 1657312200 (2022/07/08 10:30:00).
