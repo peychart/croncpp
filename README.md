@@ -175,7 +175,7 @@ Next job of a crontab :
         }    }
 
   	strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime(&rawtime) );
-  	std::cout << std::endl << "The previous job was \"" << job << "\" at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
+  	std::cout << std::endl << "The last job was \"" << job << "\" at: " << rawtime << " (" << buffer << ")." << std::endl << std::endl;
 
   	return 0;
   	}
@@ -199,4 +199,4 @@ Display:
         The job "myCmd4" has been lanched at: 1657186200 (2022/07/06 23:30:00), - "* 05-30 * * * 2-3 * myCmd4"
         The job "myCmd5" has been lanched at: 1653991200 (2022/05/31 00:00:00), - "* * * 31 * * myCmd5"
 
-        The previous job was "myCmd2" at: 1657315800 (2022/07/08 11:30:00).
+        The last job was "myCmd2" at: 1657315800 (2022/07/08 11:30:00).
