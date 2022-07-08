@@ -152,12 +152,12 @@ namespace cronTab{
         delta += (next ?1 :-1);
         if( ( (i += (next ?1 :-1)) >= ( monthSize ?monthSize :field_size[nfield] ) ) )
           i = ( next ?0 :( ( monthSize ?monthSize :field_size[nfield] ) - 1 ) );
-        if( i == j )  return time_t(-1);
+        if( i == j )  {if(nfield == field_name::day_of_month) {delta=(next ?1 :-1); nfield++; break;} else return time_t(-1);}
       }
 
       if( delta ){match=false;
         if( nfield == field_name::day_of_week ) {*tminfo[field_name::day_of_month] += delta; nfield -= 2;} else {*tminfo[nfield] += delta;};
-        while( existingField(--nfield ) ) *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );
+        while( existingField(--nfield ) ) {monthSize=( (nfield==field_name::day_of_month) ?sizeOfMonth( result ) :0 ); *tminfo[nfield] = ( next ?( (nfield==field_name::day_of_month) ?1 :0 ) :( monthSize ?monthSize : field_size[nfield]-1) );}
       }else if( nfield == field_name::year && (match || !next) ){                                                   // Ref date matchs with cron!...
         for( nfield=0; nfield<=field_name::year; nfield++ ) if( !isSet(nfield) ){  // searching for first not "*"
           if(next){
