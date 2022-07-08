@@ -113,7 +113,7 @@ namespace cronTab{
   std::string& cron::normalizeField( field_name const nfield, std::string& s ){
     std::stringstream str( std::stringstream::out );
     if( field_name( nfield ) == field_name::day_of_week ){
-      for(byte i(0); i< 6; i++) if( toUpper(s).compare( weekDay[i]  )==0 ) {str << i + field_offset[nfield]; s.assign( str.str() );}
+      for(byte i(0); i< 6; i++) if( toUpper(s).compare( weekDay[i]   )==0 ) {str << i + field_offset[nfield]; s.assign( str.str() );}
     }else if( field_name( nfield ) == field_name::month ){
       for(byte i(0); i<12; i++) if( toUpper(s).compare( monthName[i] )==0 ) {str << i + field_offset[nfield]; s.assign( str.str() );}
     }else if( field_name( nfield ) == field_name::year ){
