@@ -95,7 +95,7 @@ namespace cronTab{
     }else if( first.compare( "L" ) == 0 ){
       if( nfield!=field_name::day_of_week && nfield!=field_name::day_of_month )
             convError( true );
-      else {setBit( field_name(nfield), field_size[ nfield ]-1, v );}
+      else {setBit( field_name(nfield), field_size[ nfield ]-1, v ); if(nfield==field_name::day_of_month) _lastIsSet=true;}
 
     }else if( first.compare( "W" ) == 0 ){
       if( nfield!=field_name::day_of_week )
@@ -145,7 +145,7 @@ namespace cronTab{
         tminfo[nfield]=0;
         if( nfield<field_name::year ) continue;
       }else while( true ){
-        if( isSet( field_name(nfield), i ) )
+        if( isSet( field_name(nfield), i ) || (nfield==field_name::day_of_month && i==monthSize-1 && _lastIsSet) )
           break;
         delta += (next ?1 :-1);
         if( ( (i += (next ?1 :-1)) >= ( monthSize ?monthSize :field_size[nfield] ) ) )
