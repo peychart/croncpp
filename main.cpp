@@ -13,7 +13,8 @@ int main() {
         "5-55 55 * * apr * myCmd1",
         "* 25-30 * * * * myCmd2",
         "*/10 55 * * apr * 2021,2025 myCmd3",
-        "* 05-30 * * * 2-3 * myCmd4"
+        "* 05-30 * * * 2-3 * myCmd4",
+        "* * * 31 * * myCmd5"
   };
 
   char buffer [80];
