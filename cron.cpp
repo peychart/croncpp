@@ -65,9 +65,7 @@ namespace cronTab{
     << " " << (t->tm_wday    + field_offset[field_name::day_of_week])
     << " " << (1900 + t->tm_year)
     << " NIL";
-    assign( s.str() );
-    //setBit( byte(field_name::month), sizeOfMonth(*t), isSet( byte(field_name::month), field_size[field_name::month] ) );
-    return *this;
+    return assign( s.str() );
   }
 
   void cron::setField( field_name const nfield, std::string first, bool v ){
