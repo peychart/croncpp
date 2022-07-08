@@ -136,7 +136,8 @@ Next job of a crontab :
 	      "5-55 55 * * apr * myCmd1",
 	      "* 25-30 * * * * myCmd2",
 	      "*/10 55 * * apr * 2021,2025 myCmd3",
-	      "* 05-30 * * * 2-3 * myCmd4"
+	      "* 05-30 * * * 2-3 * myCmd4",
+	      "* * * 31 * * myCmd5"
 	};
 
 	char buffer [80];
@@ -176,5 +177,6 @@ Display:
         The job "myCmd2" lanched at: 1656969900 (2022/07/04 11:25:00), - "* 25-30 * * * * myCmd2"
         The job "myCmd3" lanched at: 1743504900 (2025/04/01 00:55:00), - "*/10 55 * * apr * 2021,2025 myCmd3"
         The job "myCmd4" lanched at: 1657015500 (2022/07/05 00:05:00), - "* 05-30 * * * 2-3 * myCmd4"
+        The job "myCmd5" lanched at: 1659261600 (2022/07/31 00:00:00), - "* * * 31 * * myCmd5"
 
         The next job will be "myCmd2" at: 1656969900 (2022/07/04 11:25:00).
