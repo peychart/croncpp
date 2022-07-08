@@ -154,7 +154,7 @@ Next job of a crontab :
  	   t = c.nextDate( Now );
 
  	   strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &t ) );
- 	   std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << t << " (" << buffer << "), - \"" << x << "\"" << std::endl;
+ 	   std::cout << "The job \"" << c.expression() << "\" will be lanched at: " << t << " (" << buffer << ") - \"" << x << "\"" << std::endl;
 
  	   if ( t != -1 && t < rawtime ){
  	      rawtime = t; job = c.expression();
@@ -168,7 +168,7 @@ Next job of a crontab :
  	   t = c.previousDate( Now );
 
  	   strftime ( buffer, 80, "%Y/%m/%d %H:%M:%S", localtime( &t ) );
- 	   std::cout << "The job \"" << c.expression() << "\" has been lanched at: " << t << " (" << buffer << "), - \"" << x << "\"" << std::endl;
+ 	   std::cout << "The job \"" << c.expression() << "\" has been lanched at: " << t << " (" << buffer << ") - \"" << x << "\"" << std::endl;
 
  	   if ( t != -1 && t > rawtime ){
  	      rawtime = t; job = c.expression();
@@ -185,18 +185,18 @@ Display:
 
         Now() is 1657317135 (2022/07/08 11:52:15):
 
-        The job "myCmd1" will be lanched at: 1680346505 (2023/04/01 00:55:05), - "5-55 55 * * apr * myCmd1"
-        The job "myCmd2" will be lanched at: 1657319100 (2022/07/08 12:25:00), - "* 25-30 * * * * myCmd2"
-        The job "myCmd3" will be lanched at: 1743504900 (2025/04/01 00:55:00), - "*/10 55 * * apr * 2021,2025 myCmd3"
-        The job "myCmd4" will be lanched at: 1657620300 (2022/07/12 00:05:00), - "* 05-30 * * * 2-3 * myCmd4"
-        The job "myCmd5" will be lanched at: 1659261600 (2022/07/31 00:00:00), - "* * * 31 * * myCmd5"
+        The job "myCmd1" will be lanched at: 1680346505 (2023/04/01 00:55:05) - "5-55 55 * * apr * myCmd1"
+        The job "myCmd2" will be lanched at: 1657319100 (2022/07/08 12:25:00) - "* 25-30 * * * * myCmd2"
+        The job "myCmd3" will be lanched at: 1743504900 (2025/04/01 00:55:00) - "*/10 55 * * apr * 2021,2025 myCmd3"
+        The job "myCmd4" will be lanched at: 1657620300 (2022/07/12 00:05:00) - "* 05-30 * * * 2-3 * myCmd4"
+        The job "myCmd5" will be lanched at: 1659261600 (2022/07/31 00:00:00) - "* * * 31 * * myCmd5"
 
         The next job will be "myCmd2" at: 1657319100 (2022/07/08 12:25:00).
 
-        The job "myCmd1" has been lanched at: 1651398955 (2022/04/30 23:55:55), - "5-55 55 * * apr * myCmd1"
-        The job "myCmd2" has been lanched at: 1657315800 (2022/07/08 11:30:00), - "* 25-30 * * * * myCmd2"
-        The job "myCmd3" has been lanched at: 1619862950 (2021/04/30 23:55:50), - "*/10 55 * * apr * 2021,2025 myCmd3"
-        The job "myCmd4" has been lanched at: 1657186200 (2022/07/06 23:30:00), - "* 05-30 * * * 2-3 * myCmd4"
-        The job "myCmd5" has been lanched at: 1653991200 (2022/05/31 00:00:00), - "* * * 31 * * myCmd5"
+        The job "myCmd1" has been lanched at: 1651398955 (2022/04/30 23:55:55) - "5-55 55 * * apr * myCmd1"
+        The job "myCmd2" has been lanched at: 1657315800 (2022/07/08 11:30:00) - "* 25-30 * * * * myCmd2"
+        The job "myCmd3" has been lanched at: 1619862950 (2021/04/30 23:55:50) - "*/10 55 * * apr * 2021,2025 myCmd3"
+        The job "myCmd4" has been lanched at: 1657186200 (2022/07/06 23:30:00) - "* 05-30 * * * 2-3 * myCmd4"
+        The job "myCmd5" has been lanched at: 1653991200 (2022/05/31 00:00:00) - "* * * 31 * * myCmd5"
 
         The last job was "myCmd2" at: 1657315800 (2022/07/08 11:30:00).
