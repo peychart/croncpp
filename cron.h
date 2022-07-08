@@ -109,7 +109,7 @@ namespace cronTab
     std::string&        normalizeField    ( field_name const, std::string& );
     inline std::string& normalizeField    ( byte const nfield, std::string& s )   {return( normalizeField( field_name(nfield), s ) );};
     cron&               initRef           ( std::tm&, int*[] );
-    int                 sizeOfMonth       ( std::tm&, bool=false );
+    int                 sizeOfMonth       ( const std::tm&, bool=false );
  };
 }
 using namespace cronTab;
