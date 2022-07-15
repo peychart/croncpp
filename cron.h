@@ -45,7 +45,7 @@ namespace cronTab
   class cron : std::bitset<field_name::expr>
   {
   public:
-    cron( void )             :_err(true)  {init();};
+    cron( void )             :_err(false) {init();};
     cron( std::string s )    :_err(false) {init(); assign( s );};
    ~cron( void )                          {clear();};
 
