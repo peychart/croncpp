@@ -25,7 +25,7 @@ This allows to find the current status of the iot device after rebooting and pla
   </tr>
   <tr>
     <td><tt>std::string cron.expression()</tt></td>
-    <td>return the command off the job</td>
+    <td>return the command of the job</td>
   </tr>
   <tr>
     <td><tt>cron& cron.assign( std::string )</td>
